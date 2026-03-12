@@ -3,6 +3,8 @@ import dotenv from 'dotenv';
 
 import { connectToDB } from './config/database.js'
 
+import journalRoute from './routes/journal.js'
+
 dotenv.config();
 
 const app = express();
@@ -15,6 +17,8 @@ app.get('/', (req,res) => {
         message: 'Welcome to AI-Journal-App'
     })
 });
+
+app.use('/api/journal', journalRoute );
 
 app.listen(3000, () => {
     console.log('server is running on port 3000')
