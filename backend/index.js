@@ -4,6 +4,7 @@ import dotenv from 'dotenv';
 import { connectToDB } from './config/database.js'
 
 import journalRoute from './routes/journal.js'
+import authRoute from './routes/auth.js'
 
 dotenv.config();
 
@@ -21,6 +22,7 @@ app.get('/', (_req,res) => {
     })
 });
 
+app.use('/api/auth', authRoute);
 app.use('/api/journal', journalRoute );
 
 
