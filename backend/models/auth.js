@@ -8,10 +8,12 @@ const authSchema = mongoose.Schema({
     email: {
         type: String,
         unique: true,
+        required: true,
         match: [/^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,}$/i, 'Please enter a valid email']
     },
     password: {
         type: String,
+        required: true,
         minlength: [6, 'Password should be at least 6 characters'],
         select: false
     }
