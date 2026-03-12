@@ -9,9 +9,12 @@ dotenv.config();
 
 const app = express();
 
+app.use(express.json());
+app.use(express.urlencoded({ extended: true }));
+
 connectToDB();
 
-app.get('/', (req,res) => {
+app.get('/', (_req,res) => {
     return res.status(200).json({
         success: true,
         message: 'Welcome to AI-Journal-App'
@@ -20,6 +23,16 @@ app.get('/', (req,res) => {
 
 app.use('/api/journal', journalRoute );
 
+
+app.use((err, _req, res, _next) => {
+    console.error(err.stack);
+    return res.status(500).json({
+        success: false,
+        message: 'Internal Server Error'
+    });
+});
+
+const PORT = process.env.PORT || 3000;
 app.listen(3000, () => {
-    console.log('server is running on port 3000')
+    console.log(`Server is running on port ${PORT}`);
 })
