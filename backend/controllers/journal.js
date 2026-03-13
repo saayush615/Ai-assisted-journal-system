@@ -1,4 +1,5 @@
 import Journal from "../models/journal.js";
+import ai from '../services/gemini.js'
 
 async function handleJournalEntry(req, res, next) {
     try {
@@ -81,7 +82,41 @@ async function handleGetJournalEntry(req, res, next) {
 
 async function handleEmotionAnalysis(req, res, next) {
     try {
-        
+        const { text } = req.body;
+
+        if (!text?.trim()) {
+            return res.status(400).json({ 
+                success: false, 
+                message: "Text is required." 
+            });
+        }
+
+        const prompt = `
+            You are an emotion analysis assistant for a journal app.
+            Analyze the journal entry and return a JSON object with:
+            - "emotion": one of (happy, sad, anxious, calm, angry, excited, grateful, overwhelmed, hopeful, lonely)
+            - "keywords": array of 3-5 important words from the text
+            - "summary": one sentence summary (max 20 words)
+
+            Journal entry:
+            "${text.trim()}"
+        `.trim();
+
+        const response = await ai.models.generateContent({
+            model: "gemini-3-flash-preview",
+            contents: prompt,
+            config: {
+                responseMimeType: "application/json"
+            }
+        });
+
+        const analysis = JSON.parse(response.text);
+
+        return res.status(200).json({
+            success: true,
+            message: "Emotion analysis complete.",
+            analysis
+        });
     } catch (error) {
         next(error);
     }
