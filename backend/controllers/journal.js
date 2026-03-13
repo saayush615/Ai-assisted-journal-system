@@ -27,16 +27,41 @@ async function handleJournalEntry(req, res, next) {
             });
         }
 
+        const prompt = `
+            You are an emotion analysis assistant for a journal app.
+            Analyze the journal entry and return a JSON object with:
+            - "emotion": one of (happy, sad, anxious, calm, angry, excited, grateful, overwhelmed, hopeful, lonely)
+            - "keywords": array of 3-5 important words from the text
+            - "summary": one sentence summary (max 20 words)
+
+            Journal entry:
+            "${text.trim()}"
+        `.trim();
+
+        const aiResponse = await ai.models.generateContent({
+            model: "gemini-2.0-flash",
+            contents: prompt,
+            config: {
+                responseMimeType: "application/json"
+            }
+        });
+
+        const analysis = JSON.parse(aiResponse.text);
+
         const response = await Journal.create({
             userId,
             ambience,
-            text: text.trim()
-        })
+            text: text.trim(),
+            emotion: analysis.emotion || null,
+            keywords: analysis.keywords || [],
+            summary: analysis.summary || null
+        });
+
         return res.status(201).json({
             success: true,
             message: 'New journal entry created!',
             response
-        })
+        });
     } catch (error) {
         next(error);
     }
