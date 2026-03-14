@@ -1,7 +1,10 @@
 import express from 'express';
 import dotenv from 'dotenv';
+import cookieParser from 'cookie-parser';
 
 import { connectToDB } from './config/database.js'
+
+import { checkAuthentication } from './middleware/auth.js';
 
 import journalRoute from './routes/journal.js'
 import authRoute from './routes/auth.js'
@@ -12,6 +15,8 @@ const app = express();
 
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
+app.use(cookieParser());
+app.use(checkAuthentication);
 
 connectToDB();
 
