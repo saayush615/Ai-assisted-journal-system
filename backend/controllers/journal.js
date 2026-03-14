@@ -4,12 +4,6 @@ import ai from '../services/gemini.js'
 async function handleJournalEntry(req, res, next) {
     try {
         const userId = req.user?.id;
-        if (!userId) {
-            return res.status(401).json({
-                success: false,
-                message: 'Login before submitting journal'
-            });
-        };
 
         const { ambience, text } = req.body;
 
@@ -71,20 +65,6 @@ async function handleGetJournalEntry(req, res, next) {
     try {
         const { userId } = req.params;
         const authUserId = req.user?.id;
-        if (!userId) {
-            return res.status(401).json({
-            success: false,
-            message: 'Login to get your journal entries.'
-            });
-        };
-
-        // Authrization
-        if (authUserId !== userId) {
-            return res.status(403).json({
-                success: false,
-                message: 'Forbidden'
-            });
-        }
 
         const response = await Journal.find({ userId });
         if (response.length === 0) {
