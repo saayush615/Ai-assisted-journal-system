@@ -39,7 +39,7 @@ async function handleJournalEntry(req, res, next) {
         `.trim();
 
         const aiResponse = await ai.models.generateContent({
-            model: "gemini-2.0-flash",
+            model: "gemini-3-flash-preview",
             contents: prompt,
             config: {
                 responseMimeType: "application/json"
@@ -149,7 +149,55 @@ async function handleEmotionAnalysis(req, res, next) {
 
 async function handleUserInsights(req, res, next) {
     try {
-        
+        const { userId } = req.params;
+
+        const journals = await Journal.find({ userId });
+
+        if (journals.length === 0) {
+            return res.status(200).json({
+                success: true,
+                message: 'There is no journal entry yet',
+                insights: null
+            });
+        }
+
+        const emotionCount = {};
+        const ambienceCount = {};
+
+        for (const journal of journals) {
+            if (journal.emotion) {
+                emotionCount[journal.emotion] = (emotionCount[journal.emotion] || 0) + 1;
+            }
+            if (journal.ambience) {
+                ambienceCount[journal.ambience] = (ambienceCount[journal.ambience] || 0) + 1;
+            }
+        }
+
+        const topEmotion = Object.keys(emotionCount).length > 0
+            ? Object.keys(emotionCount).reduce((a, b) => emotionCount[a] > emotionCount[b] ? a : b)
+            : null;
+
+        const mostUsedAmbience = Object.keys(ambienceCount).length > 0
+            ? Object.keys(ambienceCount).reduce((a, b) => ambienceCount[a] > ambienceCount[b] ? a : b)
+            : null;
+
+        const recentKeywords = [...new Set(
+            journals.slice(-10).flatMap(journal => journal.keywords || [])
+        )];
+
+
+        const insights = {
+            totalEntries: journals.length,
+            topEmotion,
+            mostUsedAmbience,
+            recentKeywords
+        }
+
+        return res.status(200).json({
+            success: true,
+            message: 'Insights generated successfully.',
+            insights
+        });
     } catch (error) {
         next(error);
     }
