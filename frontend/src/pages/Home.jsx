@@ -78,11 +78,10 @@ const Home = () => {
 
   const handleAnalyze = async () => {
     const payload = {
-      text: text.trim(),
-      ambience,
+      text: text.trim()
     }
 
-    if (!payload.text || !payload.ambience) return;
+    if (!payload.text) return;
 
     setAnalyzing(true);
     try {
@@ -190,7 +189,7 @@ const Home = () => {
             <Button
               variant="outline"
               onClick={handleAnalyze}
-              disabled={!text.trim() || !ambience || analyzing}
+              disabled={!text.trim() || analyzing}
             >
               {analyzing ? 'Analyzing...' : 'Analyze'}
             </Button>
@@ -210,9 +209,11 @@ const Home = () => {
                 AI Analysis
               </h2>
               <div className="flex gap-2 flex-wrap">
-                <span className="text-sm px-3 py-1 bg-background border rounded-full capitalize">
+                <span>Emotion: </span>
+                <p className="text-sm px-3 py-1 bg-background border rounded-full capitalize">
                   {analysis.emotion}
-                </span>
+                </p>
+                <span>Keywords: </span>
                 {analysis.keywords?.map((kw) => (
                   <span
                     key={kw}
@@ -222,7 +223,7 @@ const Home = () => {
                   </span>
                 ))}
               </div>
-              <p className="text-sm text-muted-foreground italic">"{analysis.summary}"</p>
+              <p className="text-sm text-muted-foreground italic">"Summary: {analysis.summary}"</p>
             </div>
           )}
         </main>
