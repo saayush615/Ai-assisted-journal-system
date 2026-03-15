@@ -9,7 +9,7 @@ import { AuthenticatedUserOnly, AuthorOnly } from '../middleware/authorization.j
 
 const router = express.Router();
 
-router.post('/analyze', AuthenticatedUserOnly, handleEmotionAnalysis);
+router.post('/analyze', handleEmotionAnalysis);
 router.get('/insights/:userId', AuthenticatedUserOnly, AuthorOnly, handleUserInsights);
 router.post('/', AuthenticatedUserOnly, handleJournalEntry);
 router.get('/:userId', AuthenticatedUserOnly, AuthorOnly, handleGetJournalEntry);
