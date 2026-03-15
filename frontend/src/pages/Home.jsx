@@ -17,7 +17,7 @@ import axios from 'axios'
 import { useAuth } from '@/hooks/useAuth'
 
 const Home = () => {
-   const { user, logout, isAuthenticated } = useAuth();
+   const { user, logout, isAuthenticated, login } = useAuth();
    const AMBIENCES = ['forest', 'ocean', 'mountain'];
    const [ambience, setAmbience] = useState('');
    const [text, setText] = useState('');
@@ -63,10 +63,13 @@ const Home = () => {
         : { name: values.name, email: values.email, password: values.password }
 
     try {
-      await axios.post(`${import.meta.env.VITE_API_URL}${endpoint}`, payload, {
+      const res = await axios.post(`${import.meta.env.VITE_API_URL}${endpoint}`, payload, {
         withCredentials: true,
       })
-      setAuthDialogOpen(false)
+      setAuthDialogOpen(false);
+      if (authMode === 'login' && res.data?.success) {
+        login(res.data?.user);
+      }
       reset({ name: '', email: '', password: '' })
       window.location.reload()
     } catch (error) {
@@ -129,7 +132,7 @@ const Home = () => {
                   <Button variant="outline" size="sm" asChild>
                     <Link to="/dashboard">Dashboard</Link>
                   </Button>
-                  <Button variant="ghost" size="sm" onClick={handleLogout}>
+                  <Button variant="destructive" size="sm" onClick={handleLogout}>
                     Logout
                   </Button>
                 </>
