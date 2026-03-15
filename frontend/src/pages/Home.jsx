@@ -109,10 +109,9 @@ const Home = () => {
 
     setSubmitting(true);
     try {
-      const res = await axios.post(`${import.meta.env.VITE_API_URL}/api/journal/`, payload,{
+      await axios.post(`${import.meta.env.VITE_API_URL}/api/journal/`, payload,{
         withCredentials: true
       });
-      console.log(res);
     } catch (error) {
       console.error(error);
     } finally {
