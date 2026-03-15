@@ -41,15 +41,9 @@ export const AuthProvider = ({ children }) => {
     const logout = async () => {
         setLoading(true)
         try {
-            const response = await axios.post(`${import.meta.env.VITE_API_URL}/user/logout`,{
+            await axios.post(`${import.meta.env.VITE_API_URL}/user/logout`,{
                 withCredentials: true
             })
-
-            if (response.data.success) {
-                navigate('/login',{
-                    state: { logoutSuccess: true }
-                });
-            }
         } catch (error) {
             console.log(error);
         } finally {
