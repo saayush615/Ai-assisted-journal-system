@@ -44,7 +44,7 @@ const Home = () => {
   })
 
   const handleLogout = async () => {
-    await logout()
+    await logout();
   }
 
   const openAuthDialog = (mode) => {
