@@ -48,7 +48,7 @@ Right now we're sending the full journal text. For most entries, the first 300-4
 A simple rate limit (e.g. 20 analyses/day) prevents one user from burning through the quota and also protects against abuse.
 
 **Use a smaller model if quality holds**
-`emini-3-flash-preview` is already the lighter model. Worth testing if an even smaller one gives acceptable results for this simple task.
+`gemini-3-flash-preview` is already the lighter model. Worth testing if an even smaller one gives acceptable results for this simple task.
 
 ---
 
