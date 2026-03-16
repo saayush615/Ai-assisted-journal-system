@@ -10,7 +10,7 @@ Right now the app runs on a single Express server with a local MongoDB — that 
 Instead of one server, run several Express instances behind a load balancer (like Nginx). Since we're using JWT for auth (stateless), any instance can handle any request without worrying about sessions.
 
 **Move MongoDB to Atlas**
-Switch from local MongoDB to MongoDB Atlas which gives you a replica set out of the box — one primary handles writes, secondaries handle reads. Also add indexes on the fields we query the most: `userId` and `createdAt`.
+Switch from local MongoDB to MongoDB Atlas which gives you a replica set out of the box — one primary handles writes, secondaries handle reads. Also add indexes on the fields we query the most: `userId` and `createdAt`.(_which i have already added just indexing is left_)
 
 **Don't call Gemini synchronously**
 The biggest bottleneck at scale is the AI call — it blocks the request for 2-3 seconds. The fix is a job queue (like BullMQ + Redis). When a user saves an entry:
@@ -48,7 +48,7 @@ Right now we're sending the full journal text. For most entries, the first 300-4
 A simple rate limit (e.g. 20 analyses/day) prevents one user from burning through the quota and also protects against abuse.
 
 **Use a smaller model if quality holds**
-`gemini-2.0-flash` is already the lighter model. Worth testing if an even smaller one gives acceptable results for this simple task.
+`emini-3-flash-preview` is already the lighter model. Worth testing if an even smaller one gives acceptable results for this simple task.
 
 ---
 
