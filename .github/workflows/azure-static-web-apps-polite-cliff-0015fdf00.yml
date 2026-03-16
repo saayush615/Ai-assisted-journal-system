@@ -5,7 +5,8 @@ on:
     branches:
       - main  # Triggers on push to main branch
     paths:
-      - 'frontend/**'  # Only triggers when frontend files change
+      - 'frontend/**'
+      - '.github/workflows/azure-static-web-apps-polite-cliff-0015fdf00.yml'
   pull_request:
     types: [opened, synchronize, reopened, closed]
     branches:
@@ -15,7 +16,7 @@ on:
 
 # Environment variables used across all jobs
 env:
-  NODE_VERSION: '20.x'  # Match your local Node.js version
+  NODE_VERSION: '24'
   FRONTEND_DIR: './frontend'
 
 jobs:
@@ -29,14 +30,14 @@ jobs:
     steps:
       # 1. Get the code from GitHub repository
       - name: Checkout repository
-        uses: actions/checkout@v4
+        uses: actions/checkout@v6
         with:
           submodules: true
           lfs: false
 
       # 2. Set up Node.js environment
       - name: Set up Node.js
-        uses: actions/setup-node@v4
+        uses: actions/setup-node@v6
         with:
           node-version: ${{ env.NODE_VERSION }}
           cache: 'npm'
