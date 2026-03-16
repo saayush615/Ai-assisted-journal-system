@@ -2,7 +2,7 @@
 
 A full-stack journaling application powered by Google Gemini AI that helps users document their thoughts, receive instant emotional analysis, and track mood patterns over time.
 
-**YouTube Demo**: [Click here to watch](https://youtu.be/UHttaJ5Km8M)
+**YouTube Demo**: [Click here to watch](https://youtu.be/UHttaJ5Km8M) | 
 **Live Demo**: [Click here](https://polite-cliff-0015fdf00.1.azurestaticapps.net/)
 
 ---
