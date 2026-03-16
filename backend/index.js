@@ -15,7 +15,7 @@ dotenv.config();
 const app = express();
 
 app.use(cors({
-  origin: 'http://localhost:5173',
+  origin: ['http://localhost:5173', 'https://polite-cliff-0015fdf00.1.azurestaticapps.net'],
   credentials: true
 }));
 app.use(express.json());
